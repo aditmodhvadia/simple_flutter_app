@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import './route_generator.dart';
+import 'package:simple_flutter_app/routes/route_generator.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,10 +44,10 @@ class _SplashPageState extends State<SplashPage> {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(
-                  '/logiasdn',
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteGenerator.LOGIN_ROUTE,
 //                  arguments: 'testing',
-                );
+                    ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
               },
               child: Text(
                 'Go',

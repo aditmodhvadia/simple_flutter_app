@@ -3,13 +3,16 @@ import 'package:simple_flutter_app/main.dart';
 import 'package:simple_flutter_app/pages/login_page.dart';
 
 class RouteGenerator {
+  static const LOGIN_ROUTE = '/login';
+  static const SPLASH_ROUTE = '/';
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
 //    final args = settings.arguments;
 
     switch (settings.name) {
-      case '/':
+      case SPLASH_ROUTE:
         return MaterialPageRoute(builder: (_) => SplashPage());
-      case '/login':
+      case LOGIN_ROUTE:
 //        if (args is String) {
         return MaterialPageRoute(builder: (_) => LoginPage());
 //        }
@@ -31,7 +34,8 @@ class RouteGenerator {
         body: Center(
             child: Text(
           'Error Occured',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
         )),
       );
     });
