@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './route_generator.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -11,82 +13,50 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Home Page'),
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
+//      home: SplashPage(title: 'Flutter Home Page'),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+class SplashPage extends StatefulWidget {
+  SplashPage({Key key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _SplashPageState createState() => _SplashPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
-
-  void _refreshCounter() {
-    setState(() {
-      _counter = 0;
-    });
-  }
-
+class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.refresh), onPressed: () => _refreshCounter())
-        ],
+        title: Text('Splash'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              'Welcome',
+              style: TextStyle(fontSize: 28),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  '/logiasdn',
+//                  arguments: 'testing',
+                );
+              },
+              child: Text(
+                'Go',
+                style: TextStyle(fontSize: 21),
+              ),
+            )
           ],
         ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
-              child: Icon(Icons.add),
-            ),
-          ),
-          FloatingActionButton(
-            onPressed: _decrementCounter,
-            tooltip: 'Decrement',
-            child: Icon(Icons.remove),
-          ),
-        ],
       ),
     );
   }
