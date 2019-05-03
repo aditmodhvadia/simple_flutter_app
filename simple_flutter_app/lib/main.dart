@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: RouteGenerator.SPLASH_ROUTE,
       onGenerateRoute: RouteGenerator.generateRoute,
 //      home: SplashPage(title: 'Flutter Home Page'),
       debugShowCheckedModeBanner: false,
