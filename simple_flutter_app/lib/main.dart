@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/routes/route_generator.dart';
+import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,8 +32,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Splash'),
+      appBar: CustomAppBar(
+        title: 'Splash',
       ),
       body: Center(
         child: Column(
