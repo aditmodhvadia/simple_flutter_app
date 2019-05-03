@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/routes/route_generator.dart';
+import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: RouteGenerator.SPLASH_ROUTE,
       onGenerateRoute: RouteGenerator.generateRoute,
 //      home: SplashPage(title: 'Flutter Home Page'),
       debugShowCheckedModeBanner: false,
@@ -31,8 +32,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Splash'),
+      appBar: CustomAppBar(
+        title: 'Splash',
       ),
       body: Center(
         child: Column(
