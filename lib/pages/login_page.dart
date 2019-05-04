@@ -26,6 +26,7 @@ class _LoginData {
 }
 
 class __LoginFormState extends State<_LoginForm> {
+  bool isLoading = false;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   _LoginData _data = new _LoginData();
 
@@ -45,14 +46,27 @@ class __LoginFormState extends State<_LoginForm> {
     return null;
   }
 
-  void submit() {
+  void submit() async {
+    setState(() {
+      isLoading = true;
+    });
     // First validate form.
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save(); // Save our form now.
 
+      await new Future.delayed(
+          const Duration(milliseconds: 2000),
+          () => setState(() {
+                isLoading = false;
+              }));
+
       print('Printing the login data.');
       print('Email: ${_data.email}');
       print('Password: ${_data.password}');
+    } else {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -88,11 +102,14 @@ class __LoginFormState extends State<_LoginForm> {
                 width: double.infinity,
                 child: MaterialButton(
                   height: 45,
-                  onPressed: this.submit,
-                  child: Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  padding: EdgeInsets.all(12),
+                  onPressed: isLoading ? null : this.submit,
+                  child: isLoading
+                      ? CircularProgressIndicator()
+                      : Text(
+                          'Login',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
                   color: Colors.red,
                 ),
                 margin: EdgeInsets.only(top: 20),
