@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
+import 'package:simple_flutter_app/routes/route_generator.dart';
 import 'package:validate/validate.dart';
 
 class LoginPage extends StatelessWidget {
@@ -72,8 +75,8 @@ class __LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
       child: Form(
         key: _formKey,
         child: Center(
@@ -113,6 +116,16 @@ class __LoginFormState extends State<_LoginForm> {
                   color: Colors.red,
                 ),
                 margin: EdgeInsets.only(top: 20),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: GestureDetector(
+                  child: Text(
+                    'Don\'t have an account? Sign up',
+                    textAlign: TextAlign.center,
+                  ),
+                  onTap: () => Navigator.of(context).pushNamed(RouteGenerator.REGISTRATION_ROUTE),
+                ),
               )
             ],
           ),
