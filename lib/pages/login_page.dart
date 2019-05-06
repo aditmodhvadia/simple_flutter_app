@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
 import 'package:simple_flutter_app/routes/route_generator.dart';
-import 'package:validate/validate.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -33,22 +33,6 @@ class __LoginFormState extends State<_LoginForm> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   _LoginData _data = new _LoginData();
 
-  String _validateEmail(String value) {
-    try {
-      Validate.isEmail(value);
-    } catch (e) {
-      return 'The E-mail Address must be a valid email address.';
-    }
-    return null;
-  }
-
-  String _validatePassword(String value) {
-    if (value.length < 8) {
-      return 'The Password must be at least 8 characters.';
-    }
-    return null;
-  }
-
   void submit() async {
     setState(() {
       isLoading = true;
@@ -56,7 +40,6 @@ class __LoginFormState extends State<_LoginForm> {
     // First validate form.
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save(); // Save our form now.
-
       await new Future.delayed(
           const Duration(milliseconds: 2000),
           () => setState(() {
@@ -87,7 +70,7 @@ class __LoginFormState extends State<_LoginForm> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     hintText: 'you@example.com', labelText: 'E-Mail Address'),
-                validator: this._validateEmail,
+                validator: AppUtils.validateEmail,
                 onSaved: (String value) {
                   this._data.email = value;
                 },
@@ -96,7 +79,7 @@ class __LoginFormState extends State<_LoginForm> {
                 obscureText: true,
                 decoration: InputDecoration(
                     hintText: 'Password', labelText: 'Enter your Password'),
-                validator: this._validatePassword,
+                validator: AppUtils.validatePassword,
                 onSaved: (String value) {
                   this._data.password = value;
                 },
@@ -124,7 +107,8 @@ class __LoginFormState extends State<_LoginForm> {
                     'Don\'t have an account? Sign up',
                     textAlign: TextAlign.center,
                   ),
-                  onTap: () => Navigator.of(context).pushNamed(RouteGenerator.REGISTRATION_ROUTE),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(RouteGenerator.REGISTRATION_ROUTE),
                 ),
               )
             ],
