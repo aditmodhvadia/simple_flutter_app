@@ -1,37 +1,37 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
-import 'package:simple_flutter_app/routes/route_generator.dart';
 
-class LoginPage extends StatelessWidget {
+class RegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Login',
-        backgroundColor: Colors.red,
+        title: 'Registration',
+        backgroundColor: Colors.green,
       ),
-      body: _LoginForm(),
+      body: _RegistrationForm(),
     );
   }
 }
 
-class _LoginForm extends StatefulWidget {
+class _RegistrationForm extends StatefulWidget {
   @override
-  __LoginFormState createState() => __LoginFormState();
+  __RegistrationFormState createState() => __RegistrationFormState();
 }
 
-class _LoginData {
+class _RegistrationData {
+  String name = '';
   String email = '';
   String password = '';
+//  String name ='';
 }
 
-class __LoginFormState extends State<_LoginForm> {
-  bool isLoading = false;
+class __RegistrationFormState extends State<_RegistrationForm> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  _LoginData _data = new _LoginData();
+  final GlobalKey<FormFieldState> _passKey = GlobalKey<FormFieldState>();
+  _RegistrationData _data = new _RegistrationData();
+  bool isLoading = false;
 
   void submit() async {
     setState(() {
@@ -47,9 +47,11 @@ class __LoginFormState extends State<_LoginForm> {
               }));
 
       print('Printing the login data.');
+      print('Name: ${_data.name}');
       print('Email: ${_data.email}');
       print('Password: ${_data.password}');
-    } else {
+    }
+    else {
       setState(() {
         isLoading = false;
       });
@@ -67,6 +69,15 @@ class __LoginFormState extends State<_LoginForm> {
             shrinkWrap: true,
             children: <Widget>[
               TextFormField(
+                keyboardType: TextInputType.text,
+                decoration:
+                    InputDecoration(hintText: 'John Doe', labelText: 'Name'),
+                validator: AppUtils.validateName,
+                onSaved: (String value) {
+                  this._data.name = value;
+                },
+              ),
+              TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     hintText: 'you@example.com', labelText: 'E-Mail Address'),
@@ -76,6 +87,7 @@ class __LoginFormState extends State<_LoginForm> {
                 },
               ),
               TextFormField(
+                key: _passKey,
                 obscureText: true,
                 decoration: InputDecoration(
                     hintText: 'Password', labelText: 'Enter your Password'),
@@ -84,33 +96,33 @@ class __LoginFormState extends State<_LoginForm> {
                   this._data.password = value;
                 },
               ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                    hintText: 'Confirm Password',
+                    labelText: 'Enter your Password again'),
+                validator: (value) => AppUtils.validateConfirmPassword(
+                      value,
+                      _passKey.currentState.value,
+                    ),
+              ),
               Container(
                 width: double.infinity,
                 child: MaterialButton(
                   height: 45,
                   padding: EdgeInsets.all(12),
-                  onPressed: isLoading ? null : this.submit,
+                onPressed: isLoading ? null : this.submit,
+//                  onPressed: this.submit,
                   child: isLoading
                       ? CircularProgressIndicator()
                       : Text(
-                          'Login',
+                          'Register',
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
-                  color: Colors.red,
+                  color: Colors.green,
                 ),
                 margin: EdgeInsets.only(top: 20),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: GestureDetector(
-                  child: Text(
-                    'Don\'t have an account? Sign up',
-                    textAlign: TextAlign.center,
-                  ),
-                  onTap: () => Navigator.of(context)
-                      .pushNamed(RouteGenerator.REGISTRATION_ROUTE),
-                ),
-              )
             ],
           ),
         ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
 import 'package:simple_flutter_app/main.dart';
 import 'package:simple_flutter_app/pages/login_page.dart';
-import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
+import 'package:simple_flutter_app/pages/registration_page.dart';
 
 class RouteGenerator {
   static const LOGIN_ROUTE = '/login';
+  static const REGISTRATION_ROUTE = '/login/registration';
   static const SPLASH_ROUTE = '/';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -19,7 +21,8 @@ class RouteGenerator {
 //        }
 
 //        return _errorRoute();
-
+      case REGISTRATION_ROUTE:
+        return MaterialPageRoute(builder: (_) => RegistrationPage());
       default:
         return _errorRoute();
     }
