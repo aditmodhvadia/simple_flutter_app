@@ -7,7 +7,7 @@ import 'package:simple_flutter_app/models/request/LoginRequest.dart';
 import 'package:simple_flutter_app/models/response/LoginResponse.dart';
 
 class ApiManager {
-  static Future loginUser(LoginRequest request) async {
+  static Future<LoginResponse> loginUser(LoginRequest request) async {
     String url = '${ApiURL.BASE_LOCAL}${ApiURL.AUTHENTICATE}';
     http.Response loginResponse = await NetworkManager.loginUser(
             {"Authorization": getAuthHeader(request.email, request.password)},

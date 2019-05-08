@@ -5,6 +5,7 @@ import 'package:simple_flutter_app/api/ApiManager.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
 import 'package:simple_flutter_app/models/request/LoginRequest.dart';
+import 'package:simple_flutter_app/models/response/LoginResponse.dart';
 import 'package:simple_flutter_app/routes/route_generator.dart';
 
 class LoginPage extends StatelessWidget {
@@ -51,9 +52,10 @@ class __LoginFormState extends State<_LoginForm> {
         email: _data.email,
         password: _data.password,
       );
-      ApiManager.loginUser(request).then((response) {
+      ApiManager.loginUser(request).then((LoginResponse response) {
         print('Printing the login data.');
 //        print('Email from server: $response');
+        print('Name from server: ${response.userName}');
         print('Email from server: ${response.userEmail}');
         print('Token from server: ${response.token}');
       }).catchError((error) {
