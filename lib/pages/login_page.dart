@@ -1,8 +1,11 @@
-import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:simple_flutter_app/api/ApiManager.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
+import 'package:simple_flutter_app/models/request/LoginRequest.dart';
+import 'package:simple_flutter_app/models/response/LoginResponse.dart';
 import 'package:simple_flutter_app/routes/route_generator.dart';
 
 class LoginPage extends StatelessWidget {
@@ -40,20 +43,31 @@ class __LoginFormState extends State<_LoginForm> {
     // First validate form.
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save(); // Save our form now.
-      await new Future.delayed(
+      /*await new Future.delayed(
           const Duration(milliseconds: 2000),
           () => setState(() {
                 isLoading = false;
-              }));
-
-      print('Printing the login data.');
-      print('Email: ${_data.email}');
-      print('Password: ${_data.password}');
-    } else {
-      setState(() {
-        isLoading = false;
+              }));*/
+      LoginRequest request = new LoginRequest(
+        email: _data.email,
+        password: _data.password,
+      );
+      ApiManager.loginUser(request).then((LoginResponse response) {
+        print('Printing the login data.');
+//        print('Email from server: $response');
+        print('Name from server: ${response.userName}');
+        print('Email from server: ${response.userEmail}');
+        print('Token from server: ${response.token}');
+      }).catchError((error) {
+//        TODO: Handle Errors from here
+        print('Error=======> $error');
+//        print('Error=======> ');
+        print('Error=======> ${jsonDecode(error)['message']}');
       });
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -68,6 +82,7 @@ class __LoginFormState extends State<_LoginForm> {
             children: <Widget>[
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
+                initialValue: 'adit.modhvadia@gmail.com',
                 decoration: InputDecoration(
                     hintText: 'you@example.com', labelText: 'E-Mail Address'),
                 validator: AppUtils.validateEmail,
@@ -76,6 +91,7 @@ class __LoginFormState extends State<_LoginForm> {
                 },
               ),
               TextFormField(
+                initialValue: 'aditadit',
                 obscureText: true,
                 decoration: InputDecoration(
                     hintText: 'Password', labelText: 'Enter your Password'),
