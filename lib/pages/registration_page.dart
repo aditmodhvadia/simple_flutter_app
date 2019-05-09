@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:simple_flutter_app/api/ApiManager.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
+import 'package:simple_flutter_app/models/request/RegistrationRequest.dart';
+import 'package:simple_flutter_app/models/response/RegistrationResponse.dart';
+import 'package:simple_flutter_app/routes/route_generator.dart';
 
 class RegistrationPage extends StatelessWidget {
   @override
@@ -40,18 +44,36 @@ class __RegistrationFormState extends State<_RegistrationForm> {
     // First validate form.
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save(); // Save our form now.
-      await new Future.delayed(
-          const Duration(milliseconds: 2000),
-          () => setState(() {
-                isLoading = false;
-              }));
+
+      RegistrationRequest request = new RegistrationRequest(
+        name: _data.name,
+        email: _data.email,
+        password: _data.password,
+      );
+
+      await ApiManager.registerUser(request)
+          .then((RegistrationResponse response) {
+        print('Printing the registration data.');
+        print('Message from server: ${response.message}');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            RouteGenerator.DASHBOARD_ROUTE,
+            ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
+      }).catchError((error) {
+        setState(() {
+          print('loading false triggered');
+          isLoading = false;
+        });
+//        TODO: Handle Errors from here
+        print('Error=======> $error');
+//        print('Error=======> ');
+//        print('Error=======> ${jsonDecode(error)['message']}');
+      });
 
       print('Printing the login data.');
       print('Name: ${_data.name}');
       print('Email: ${_data.email}');
       print('Password: ${_data.password}');
-    }
-    else {
+    } else {
       setState(() {
         isLoading = false;
       });
@@ -111,7 +133,7 @@ class __RegistrationFormState extends State<_RegistrationForm> {
                 child: MaterialButton(
                   height: 45,
                   padding: EdgeInsets.all(12),
-                onPressed: isLoading ? null : this.submit,
+                  onPressed: isLoading ? null : this.submit,
 //                  onPressed: this.submit,
                   child: isLoading
                       ? CircularProgressIndicator()

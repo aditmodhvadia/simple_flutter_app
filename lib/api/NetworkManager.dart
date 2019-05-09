@@ -13,7 +13,7 @@ class NetworkManager {
 //    TODO: Check for internet connection and give alert accordingly
     final response = await http.post(url, headers: header, body: body);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return response;
     } else {
       throw '${response.body}';
