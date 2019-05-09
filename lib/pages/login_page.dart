@@ -52,22 +52,31 @@ class __LoginFormState extends State<_LoginForm> {
         email: _data.email,
         password: _data.password,
       );
-      ApiManager.loginUser(request).then((LoginResponse response) {
+      await ApiManager.loginUser(request).then((LoginResponse response) {
         print('Printing the login data.');
 //        print('Email from server: $response');
         print('Name from server: ${response.userName}');
         print('Email from server: ${response.userEmail}');
         print('Token from server: ${response.token}');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            RouteGenerator.DASHBOARD_ROUTE,
+            ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
       }).catchError((error) {
+        setState(() {
+          print('loading false triggered');
+          isLoading = false;
+        });
 //        TODO: Handle Errors from here
         print('Error=======> $error');
 //        print('Error=======> ');
-        print('Error=======> ${jsonDecode(error)['message']}');
+//        print('Error=======> ${jsonDecode(error)['message']}');
+      });
+    } else {
+      setState(() {
+        print('loading false triggered');
+        isLoading = false;
       });
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override

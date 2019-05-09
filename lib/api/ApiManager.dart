@@ -9,10 +9,10 @@ import 'package:simple_flutter_app/models/response/LoginResponse.dart';
 class ApiManager {
   static Future<LoginResponse> loginUser(LoginRequest request) async {
     String url = '${ApiURL.BASE_LOCAL}${ApiURL.AUTHENTICATE}';
-    http.Response loginResponse = await NetworkManager.loginUser(
-            {"Authorization": getAuthHeader(request.email, request.password)},
-            url)
-        .catchError((errMsg) {
+    http.Response loginResponse = await NetworkManager.postWithHeader(
+      header: {"Authorization": getAuthHeader(request.email, request.password)},
+      url: url,
+    ).catchError((errMsg) {
       throw errMsg;
     });
 //    TODO: Store token in-memory from here

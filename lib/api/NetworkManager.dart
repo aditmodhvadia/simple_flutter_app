@@ -4,9 +4,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NetworkManager {
-  static Future<http.Response> loginUser(Object header, String url) async {
+  bool isLoggingEnabled = false;
+
+//  TODO: Add logging for all network calls if logging enabled
+
+  static Future<http.Response> postWithHeader(
+      {Object header, String url, Object body}) async {
 //    TODO: Check for internet connection and give alert accordingly
-    final response = await http.post(url, headers: header);
+    final response = await http.post(url, headers: header, body: body);
 
     if (response.statusCode == 200) {
       return response;
