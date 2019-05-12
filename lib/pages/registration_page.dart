@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/api/ApiManager.dart';
+import 'package:simple_flutter_app/commons/AlertUtils.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
 import 'package:simple_flutter_app/models/request/RegistrationRequest.dart';
@@ -52,12 +53,24 @@ class __RegistrationFormState extends State<_RegistrationForm> {
       );
 
       await ApiManager.registerUser(request)
-          .then((RegistrationResponse response) {
+          .then((RegistrationResponse response) async {
+        setState(() {
+          isLoading = false;
+        });
         print('Printing the registration data.');
         print('Message from server: ${response.message}');
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            RouteGenerator.DASHBOARD_ROUTE,
-            ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
+        String callback = await AlertUtils.showSimpleDialog(
+          context: context,
+          title: 'Registration Successful!',
+            message: 'Please login to continue',
+          buttonText: 'Okay',
+        );
+        if (callback == AlertUtils.POSITIVE_CALLBACK) {
+          print('Callback received');
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteGenerator.LOGIN_ROUTE,
+              ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
+        }
       }).catchError((error) {
         setState(() {
           print('loading false triggered');
