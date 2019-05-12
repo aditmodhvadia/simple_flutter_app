@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/api/ApiManager.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
