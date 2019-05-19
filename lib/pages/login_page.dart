@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/api/ApiManager.dart';
+import 'package:simple_flutter_app/commons/AlertUtils.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
 import 'package:simple_flutter_app/models/request/LoginRequest.dart';
@@ -59,12 +62,18 @@ class __LoginFormState extends State<_LoginForm> {
         Navigator.of(context).pushNamedAndRemoveUntil(
             RouteGenerator.DASHBOARD_ROUTE,
             ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
-      }).catchError((error) {
+      }).catchError((error) async {
         setState(() {
           print('loading false triggered');
           isLoading = false;
         });
-//        TODO: Handle Errors from here
+        await AlertUtils.showSimpleDialog(
+            context: context,
+            buttonText: 'Okay',
+            title: 'Error occurred',
+            message: jsonDecode(error)['message'],
+            buttonColor: Colors.red
+        );
         print('Error=======> $error');
 //        print('Error=======> ');
 //        print('Error=======> ${jsonDecode(error)['message']}');

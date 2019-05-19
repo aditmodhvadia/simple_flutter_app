@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/api/ApiManager.dart';
 import 'package:simple_flutter_app/commons/AlertUtils.dart';
@@ -62,7 +64,7 @@ class __RegistrationFormState extends State<_RegistrationForm> {
         String callback = await AlertUtils.showSimpleDialog(
           context: context,
           title: 'Registration Successful!',
-            message: 'Please login to continue',
+          message: 'Please login to continue',
           buttonText: 'Okay',
         );
         if (callback == AlertUtils.POSITIVE_CALLBACK) {
@@ -71,13 +73,19 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               RouteGenerator.LOGIN_ROUTE,
               ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
         }
-      }).catchError((error) {
+      }).catchError((error) async {
         setState(() {
           print('loading false triggered');
           isLoading = false;
         });
-//        TODO: Handle Errors from here
         print('Error=======> $error');
+        await AlertUtils.showSimpleDialog(
+          context: context,
+          buttonText: 'Okay',
+          title: 'Error occurred',
+          message: jsonDecode(error)['message'],
+          buttonColor: Colors.red
+        );
 //        print('Error=======> ');
 //        print('Error=======> ${jsonDecode(error)['message']}');
       });
@@ -111,6 +119,7 @@ class __RegistrationFormState extends State<_RegistrationForm> {
                 onSaved: (String value) {
                   this._data.name = value;
                 },
+                initialValue: 'Adit Modhvadia',
               ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
@@ -120,6 +129,7 @@ class __RegistrationFormState extends State<_RegistrationForm> {
                 onSaved: (String value) {
                   this._data.email = value;
                 },
+                initialValue: 'adit.modhvadia@gmail.com',
               ),
               TextFormField(
                 key: _passKey,
@@ -130,6 +140,7 @@ class __RegistrationFormState extends State<_RegistrationForm> {
                 onSaved: (String value) {
                   this._data.password = value;
                 },
+                initialValue: 'aditadit',
               ),
               TextFormField(
                 obscureText: true,
@@ -140,6 +151,7 @@ class __RegistrationFormState extends State<_RegistrationForm> {
                       value,
                       _passKey.currentState.value,
                     ),
+                initialValue: 'aditadit',
               ),
               Container(
                 width: double.infinity,

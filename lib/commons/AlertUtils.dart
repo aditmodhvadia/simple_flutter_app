@@ -7,16 +7,22 @@ class AlertUtils {
   static const NEGATIVE_CALLBACK = 'DECLINE';
 
   static Future<String> showSimpleDialog(
-      {BuildContext context,
+      {@required BuildContext context,
       String title,
       String message,
+      var buttonColor = Colors.blue,
       @required String buttonText}) async {
     return showDialog<String>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: title != null ? Text(title) : Text(''),
+          title: title != null
+              ? Text(
+                  title,
+                  textAlign: TextAlign.center,
+                )
+              : Text(''),
           content: message != null
               ? SingleChildScrollView(
                   child: ListBody(
@@ -29,7 +35,7 @@ class AlertUtils {
                           children: <Widget>[
                             Expanded(
                               child: FlatButton(
-                                color: Colors.blue,
+                                color: buttonColor,
                                 child: Text(
                                   buttonText,
                                   style: TextStyle(color: Colors.white),
@@ -53,7 +59,7 @@ class AlertUtils {
   }
 
   static Future<String> showConfirmationDialog(
-      {BuildContext context,
+      {@required BuildContext context,
       String title,
       String message,
       @required String negativeButtonText,

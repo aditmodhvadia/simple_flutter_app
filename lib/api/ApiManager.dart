@@ -41,7 +41,7 @@ class ApiManager {
 }
 
 class ApiURL {
-  static const BASE_URL = 'http://192.168.1.4:8080/api/v1'; // Local Machine
+  static const BASE_URL = 'http://192.168.1.7:8080/api/v1'; // Local Machine
 
   static const AUTHENTICATE = '/authenticate';
   static const REGISTER = '/users';
