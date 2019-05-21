@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/api/ApiManager.dart';
 import 'package:simple_flutter_app/commons/AlertUtils.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
+import 'package:simple_flutter_app/models/ErrorModel.dart';
 import 'package:simple_flutter_app/models/request/RegistrationRequest.dart';
 import 'package:simple_flutter_app/models/response/RegistrationResponse.dart';
 import 'package:simple_flutter_app/routes/route_generator.dart';
@@ -74,18 +73,19 @@ class __RegistrationFormState extends State<_RegistrationForm> {
               ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
         }
       }).catchError((error) async {
+        ErrorModel model = error;
         setState(() {
           print('loading false triggered');
           isLoading = false;
         });
-        print('Error=======> $error');
+        print('Error=======> $model');
         await AlertUtils.showSimpleDialog(
-          context: context,
-          buttonText: 'Okay',
-          title: 'Error occurred',
-          message: jsonDecode(error)['message'],
-          buttonColor: Colors.red
-        );
+            context: context,
+            buttonText: 'Okay',
+            title: 'Error occurred',
+//          message: jsonDecode(error)['message'],
+            message: model.message,
+            buttonColor: Colors.red);
 //        print('Error=======> ');
 //        print('Error=======> ${jsonDecode(error)['message']}');
       });

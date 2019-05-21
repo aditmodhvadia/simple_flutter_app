@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:simple_flutter_app/api/ApiManager.dart';
 import 'package:simple_flutter_app/commons/AlertUtils.dart';
 import 'package:simple_flutter_app/commons/AppUtils.dart';
 import 'package:simple_flutter_app/custom_widgets/CustomAppBar.dart';
+import 'package:simple_flutter_app/models/ErrorModel.dart';
 import 'package:simple_flutter_app/models/request/LoginRequest.dart';
 import 'package:simple_flutter_app/models/response/LoginResponse.dart';
 import 'package:simple_flutter_app/routes/route_generator.dart';
@@ -63,6 +62,7 @@ class __LoginFormState extends State<_LoginForm> {
             RouteGenerator.DASHBOARD_ROUTE,
             ModalRoute.withName(RouteGenerator.SPLASH_ROUTE));
       }).catchError((error) async {
+        ErrorModel model = error;
         setState(() {
           print('loading false triggered');
           isLoading = false;
@@ -71,10 +71,10 @@ class __LoginFormState extends State<_LoginForm> {
             context: context,
             buttonText: 'Okay',
             title: 'Error occurred',
-            message: jsonDecode(error)['message'],
-            buttonColor: Colors.red
-        );
-        print('Error=======> $error');
+//            message: jsonDecode(error)['message'],
+            message: model.message,
+            buttonColor: Colors.red);
+        print('Error=======> ${model.message}');
 //        print('Error=======> ');
 //        print('Error=======> ${jsonDecode(error)['message']}');
       });
@@ -128,21 +128,23 @@ class __LoginFormState extends State<_LoginForm> {
                           'Login',
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
-                  color: Colors.red,
+                  color: isLoading ? Colors.black : Colors.red,
                 ),
                 margin: EdgeInsets.only(top: 20),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: GestureDetector(
-                  child: Text(
-                    'Don\'t have an account? Sign up',
-                    textAlign: TextAlign.center,
-                  ),
-                  onTap: () => Navigator.of(context)
-                      .pushNamed(RouteGenerator.REGISTRATION_ROUTE),
-                ),
-              )
+              isLoading
+                  ? null
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: GestureDetector(
+                        child: Text(
+                          'Don\'t have an account? Sign up',
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(RouteGenerator.REGISTRATION_ROUTE),
+                      ),
+                    )
             ],
           ),
         ),

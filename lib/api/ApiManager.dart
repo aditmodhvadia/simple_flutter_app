@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:simple_flutter_app/api/NetworkManager.dart';
@@ -12,7 +13,10 @@ class ApiManager {
   static Future<LoginResponse> loginUser(LoginRequest request) async {
     String url = '${ApiURL.BASE_URL}${ApiURL.AUTHENTICATE}';
     http.Response loginResponse = await NetworkManager.postWithHeader(
-      header: {"Authorization": getAuthHeader(request.email, request.password)},
+      header: {
+        HttpHeaders.authorizationHeader:
+            getAuthHeader(request.email, request.password)
+      },
       url: url,
     ).catchError((errMsg) {
       throw errMsg;
@@ -25,7 +29,7 @@ class ApiManager {
       RegistrationRequest request) async {
     String url = '${ApiURL.BASE_URL}${ApiURL.REGISTER}';
     http.Response registerResponse = await NetworkManager.postWithHeader(
-      header: {'Content-Type': 'application/json'},
+      header: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: jsonEncode(request.toJson()),
       url: url,
     ).catchError((errMsg) {
